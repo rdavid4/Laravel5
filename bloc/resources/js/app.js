@@ -20,7 +20,10 @@ window.Vue = require('vue');
 // const files = require.context('./', true, /\.vue$/i)
 // files.keys().map(key => Vue.component(key.split('/').pop().split('.')[0], files(key).default))
 
-Vue.component('example-component', require('./components/ExampleComponent.vue').default);
+
+Vue.component('pensamiento-component', require('./components/PensamientoComponent.vue').default);
+
+
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to
@@ -28,6 +31,28 @@ Vue.component('example-component', require('./components/ExampleComponent.vue').
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-const app = new Vue({
-    el: '#app'
-});
+var app = new Vue({
+    el: '#app',
+    data: {
+      keeps:[]
+    },
+    created: function(){
+      this.getKeeps();
+    },
+    methods: {
+      getKeeps: function(){
+        var url='task';
+        axios.get(url).then(response=>{
+          this.keeps = response.data;
+        })
+      },
+      deleteKeeps: function(keep){
+        alert("eliminar" + keep.id);
+        var url = 'task/' + keep.id;
+        axios.delete(url).then(response=>{
+          this.getKeeps();
+          alert("Elemento eliminado");
+        })
+      }
+    }
+  })
