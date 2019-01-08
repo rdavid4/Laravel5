@@ -14,7 +14,7 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::get();
+        $tasks = Task::orderBy('id', 'DESC')->get();
         return $tasks;
     }
 
@@ -36,7 +36,15 @@ class TaskController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
+       $this->validate($request,
+           [
+               'keep' => 'required',
+           ]);
+    
+    Task::create($request->all());
+   
+    return;
     }
 
     /**

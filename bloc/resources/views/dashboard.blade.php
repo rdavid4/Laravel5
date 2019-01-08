@@ -2,7 +2,7 @@
 @section('content')
 <div class="row">
     <div class="col-12">Lista de tareas</div>
-    <a href="http://" class="btn btn-primary">Añadir tarea</a>
+    <a class="btn btn-primary pull-right" data-toggle="modal" data-target="#create">Añadir tarea</a>
     <table class="table table-hover">
         <thead>
             <th>id</th>
@@ -20,5 +20,6 @@
             </tr>
         </tbody>
     </table>
+  @include('create')
 </div>
 @endsection

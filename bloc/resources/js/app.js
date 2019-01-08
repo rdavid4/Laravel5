@@ -4,8 +4,12 @@
  * includes Vue and other libraries. It is a great starting point when
  * building robust, powerful web applications using Vue and Laravel.
  */
+require('./jquery.js');
+require('./bootstrap.js');
+require('./toastr.js');
 
-require('./bootstrap');
+
+
 
 window.Vue = require('vue');
 
@@ -25,6 +29,8 @@ Vue.component('pensamiento-component', require('./components/PensamientoComponen
 
 
 
+
+
 /**
  * Next, we will create a fresh Vue application instance and attach it to
  * the page. Then, you may begin adding components to this application
@@ -34,24 +40,41 @@ Vue.component('pensamiento-component', require('./components/PensamientoComponen
 var app = new Vue({
     el: '#app',
     data: {
-      keeps:[]
+      keeps:[],
+      newKeep: '',
+      errors: []
     },
     created: function(){
       this.getKeeps();
     },
     methods: {
+
       getKeeps: function(){
         var url='task';
         axios.get(url).then(response=>{
           this.keeps = response.data;
+          toastr.success('Hola');
+
         })
       },
-      deleteKeeps: function(keep){
-        alert("eliminar" + keep.id);
+      deleteKeeps: function(keep){ 
         var url = 'task/' + keep.id;
         axios.delete(url).then(response=>{
           this.getKeeps();
-          alert("Elemento eliminado");
+          toastr.success('Hola');
+        })
+      },
+      createKeep: function(){
+        var url = 'task';
+        axios.post(url, {
+          keep: this.newKeep
+        })
+        .then(response =>{
+          this.getKeeps();
+          this.newKeep = '';
+          $('#create').modal('hide');
+        }).catch(error => {
+          this.errors = error.response.data;
         })
       }
     }
